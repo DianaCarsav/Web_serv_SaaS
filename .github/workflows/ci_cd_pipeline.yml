@@ -1,7 +1,7 @@
-# Archivo: .github/workflows/ci_cd_pipeline.yml
+
 name: CI/CD Pipeline
 
-# Se ejecuta en eventos push y pull_request a la rama principal
+# execute push and pull_request 
 on:
   push:
     branches:
@@ -10,42 +10,42 @@ on:
     branches:
       - master
   schedule:
-    - cron: '0 0 * * *' # Ejecuta el workflow todas las noches a las 00:00
+    - cron: '0 0 * * *' # run the workflow every nigth at 00:00 hours
 
 jobs:
-  # Job 1: Realizar pruebas y chequeo de calidad
+  # Job 1: make test
   build-and-test:
     name: Run Tests and Lint
-    runs-on: ubuntu-latest  # Usa una máquina virtual de Ubuntu
+    runs-on: ubuntu-latest  # Use virtual machine Ubuntu
 
     steps:
-      # 1. Checkout: Clona el repositorio en la máquina virtual
+      # 1. Checkout: Clon repository on the virtual machine
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Configurar Python
+      # 2. Configurate Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      # 3. Instalar dependencias
+      # 3. Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pytest flake8
 
-      # 4. Ejecutar flake8 para chequeo de calidad
+      # 4. Execute flake8 for quality check
       - name: Run flake8 (Code Quality Check)
         run: |
           flake8 . --count --show-source --statistics
 
-      # 5. Ejecutar pruebas con pytest
+      # 5. Ejecute test with pytest
       - name: Run pytest
         run: |
           pytest tests/
 
-      # 6. Notificación si todo sale bien
+      # 6. Notification 
       - name: Successful Run
         run: echo "CI/CD Pipeline completed successfully!"
 
