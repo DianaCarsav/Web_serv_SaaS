@@ -9,8 +9,8 @@ on:
   pull_request:
     branches:
       - master
-  schedule:
-    - cron: '0 0 * * *' # run the workflow every nigth at 00:00 hours
+  ##schedule:
+    ##- cron: '0 0 * * *' # run the workflow every nigth at 00:00 hours
 
 jobs:
   # Job 1: make test
