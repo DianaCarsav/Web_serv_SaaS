@@ -1,0 +1,56 @@
+
+name: CI/CD Pipeline
+
+# execute push and pull_request 
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  ##schedule:
+    ##- cron: '0 0 * * *' # run the workflow every nigth at 00:00 hours
+
+jobs:
+  # Job 1: make test
+  build-and-test:
+    name: Run Tests and Lint
+    runs-on: ubuntu-latest  # Use virtual machine Ubuntu
+
+    steps:
+      # 1. Checkout: Clon repository on the virtual machine
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Configurate Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest flake8
+
+      # 4. Execute flake8 for quality check
+      - name: Run flake8 (Code Quality Check)
+        run: |
+          flake8 . --count --show-source --statistics
+
+      # 5. Ejecute test with pytest
+      - name: Run pytest
+        run: |
+          pytest tests/
+
+      # 6. Notification 
+      - name: Successful Run
+        run: echo "CI/CD Pipeline completed successfully!"
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
